@@ -1,0 +1,51 @@
+show dbs
+use orderinfo
+db.order.insertMany([
+    {
+        cust_id:123,
+        cust_name:"abc",
+        status:"A",
+        price:250
+    },
+    {
+        cust_id:124,
+        cust_name:"xyz",
+        status:"A",
+        price:300
+    },
+    {
+        cust_id:125,
+        cust_name:"pqr",
+        status:"A",
+        price:270
+    },
+    {
+        cust_id:126,
+        cust_name:"lmn",
+        status:"A",
+        price:310
+    }
+])
+
+db.order.aggregate([
+    {
+        $match:{status:"A"},
+        $group:{
+            _id:"$cust_id",
+            avgprice:{$avg:"price"}
+        }
+    }
+]);
+
+ db.order.find(
+    {"price":{$gte:100,$lte:1000}},
+    {
+        _id:0,
+        cust_name:1,
+        status:1,
+        price:1
+    }
+)
+db.order.find({},{_id:0})
+db.order.createIndex({cust_id:1})
+
